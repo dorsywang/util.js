@@ -1,4 +1,5 @@
-util.js
+util.js<br />
+For a better,fast and effective development life, we have tried it!
 ======
 
 ##目标
@@ -61,4 +62,6 @@ util.js旨在聚合与重组、构建方法目录，其代码将会来自优秀�
 
 欢迎贡献代码
 
-### 
+##Other Project May Interest You
+###[AlloyDesigner](http://alloyteam.github.io/AlloyDesigner/)
+###[AlloyImage](http://alloyteam.github.io/AlloyImage/)
