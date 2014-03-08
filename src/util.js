@@ -1,6 +1,6 @@
 (function(M){
 
-    /*
+    /**
      * 初始化Ajax请求
      * @param {object} option 参数
      *      {
@@ -11,6 +11,8 @@
      *      }
      * @兼容性   PC: IE 6+   & Mobile All
      * @支持     XHR2 跨域
+     *
+     * @建议分类 HTTP
      *
      * @依赖方法   createInstance
      */
@@ -53,9 +55,10 @@
         }
     };
 
-    /*
+    /**
      * 返回一个XHR实例
      * @兼容： PC: IE6 + & Mobile All
+     * @参数： 空
      * @依赖： 无
      */
     var createInstance = function(){
@@ -83,7 +86,7 @@
     };
 
 
-    /*
+    /**
      * 通过模板字符串生成HTML
      * @param {String} tmplStr  模板字符串
      * @param {Object} data 模板数据
@@ -114,7 +117,7 @@
         return result;
     };
 
-    /*
+    /**
      * 渲染HTML中的模板标签
      * @param {String} 模板标签的id
      * @param {Object} 模板数据
@@ -170,7 +173,7 @@
         }
     };
 
-        /*
+        /**
          * 通过代理增加事件
          * @param {HTMLNode} proxyNode  要绑定到的代理元素
          * @param {String} selector 选择器  仅支持单字符串 支持# . tag选择 如 #a或.a或li等
