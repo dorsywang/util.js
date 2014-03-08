@@ -1,21 +1,21 @@
 (function(M){
 
     /**
-     * 初始化Ajax请求
-     * @param {object} option 参数
-     *      {
-     *          data: {key: val},        //数据JSON
-     *          method: 'GET',           //GET 或者 POST
-     *          url: 'http://qq.com',    //cgi地址
-     *          success: function(res){  //成功回调
-     *      }
-     * @兼容性   PC: IE 6+   & Mobile All
-     * @支持     XHR2 跨域
-     *
-     * @建议分类 HTTP
-     *
-     * @依赖方法   createInstance
-     */
+    * 初始化Ajax请求
+    * @param {object} option 参数
+    *      {
+    *          data: {key: val},        //数据JSON
+    *          method: 'GET',           //GET 或者 POST
+    *          url: 'http://qq.com',    //cgi地址
+    *          success: function(res){  //成功回调
+    *      }
+    * @兼容性   PC: IE 6+   & Mobile All
+    * @支持     XHR2 跨域
+    *
+    * @建议分类 HTTP
+    *
+    * @依赖方法   createInstance
+    */
     var initRequest = function(option){
         console.log("Proxy starts creating Ajax!!");
 
@@ -56,11 +56,11 @@
     };
 
     /**
-     * 返回一个XHR实例
-     * @兼容： PC: IE6 + & Mobile All
-     * @参数： 空
-     * @依赖： 无
-     */
+    * 返回一个XHR实例
+    * @兼容： PC: IE6 + & Mobile All
+    * @参数： 空
+    * @依赖： 无
+    */
     var createInstance = function(){
         var xmlHttp;
 
@@ -87,17 +87,17 @@
 
 
     /**
-     * 通过模板字符串生成HTML
-     * @param {String} tmplStr  模板字符串
-     * @param {Object} data 模板数据
-     *
-     * @兼容性： PC: IE 6+ & Mobile All
-     * 
-     * @依赖： 无
-     *
-     * @备注： 模板以<? ?>分隔JS代码如  模板内容中暂时无法使用单引号（双引替代）模板如
-     *  <h2 class="<?=className?>"></h2><? alert("OK"); ?>
-     */
+    * 通过模板字符串生成HTML
+    * @param {String} tmplStr  模板字符串
+    * @param {Object} data 模板数据
+    *
+    * @兼容性： PC: IE 6+ & Mobile All
+    * 
+    * @依赖： 无
+    *
+    * @备注： 模板以<? ?>分隔JS代码如  模板内容中暂时无法使用单引号（双引替代）模板如
+    *  <h2 class="<?=className?>"></h2><? alert("OK"); ?>
+    */
     var getTmpl = function(tmplStr, data){
         var result;
 
@@ -118,28 +118,28 @@
     };
 
     /**
-     * 渲染HTML中的模板标签
-     * @param {String} 模板标签的id
-     * @param {Object} 模板数据
-     * @param {boolean} 下次渲染是否以追加的方式渲染 默认为非
-     *
-     * @兼容性 PC: IE 9+ & Mobile All
-     * @依赖 getTmpl
-     *
-     * @备注： 模板如
-     * <div>
-     *  <script type='text/plain' id='list'>
-     *      <? for(var i = 0; i < 10; i ++){
-     *      ?>
-     *
-     *      <h1><?=i?></h1>
-     *
-     *      <? } ?>
-     *  </script>
-     *  </div>
-     *
-     *  调用如：  Util.renderTmpl('list', {});//会在div下直接生成模板HTML输出
-     */
+    * 渲染HTML中的模板标签
+    * @param {String} 模板标签的id
+    * @param {Object} 模板数据
+    * @param {boolean} 下次渲染是否以追加的方式渲染 默认为非
+    *
+    * @兼容性 PC: IE 9+ & Mobile All
+    * @依赖 getTmpl
+    *
+    * @备注： 模板如
+    * <div>
+    *  <script type='text/plain' id='list'>
+    *      <? for(var i = 0; i < 10; i ++){
+    *      ?>
+    *
+    *      <h1><?=i?></h1>
+    *
+    *      <? } ?>
+    *  </script>
+    *  </div>
+    *
+    *  调用如：  Util.renderTmpl('list', {});//会在div下直接生成模板HTML输出
+    */
     //保留上次的el地址，便于清除
     var lastRenderEls = {};
     var renderTmpl = function(id, data, isAppend){
@@ -173,141 +173,173 @@
         }
     };
 
-        /**
-         * 通过代理增加事件
-         * @param {HTMLNode} proxyNode  要绑定到的代理元素
-         * @param {String} selector 选择器  仅支持单字符串 支持# . tag选择 如 #a或.a或li等
-         * @param {String} eventType  事件类型  如click等
-         * @param {Function} func 处理函数
-         *
-         * @兼容 PC: IE 6+ & Mobile All
-         * @依赖 无
-         */
-        var addEvent = function(proxyNode, selector, eventType, func){//为代理节点添加事件监听
-                var proName = "",flag = 0;
-                if(typeof(selector) == "string"){
+    /**
+    * 通过代理增加事件
+    * @param {HTMLNode} proxyNode  要绑定到的代理元素
+    * @param {String} selector 选择器  仅支持单字符串 支持# . tag选择 如 #a或.a或li等
+    * @param {String} eventType  事件类型  如click等
+    * @param {Function} func 处理函数
+    *
+    * @兼容 PC: IE 6+ & Mobile All
+    * @依赖 无
+    */
+    var addEvent = function(proxyNode, selector, eventType, func){//为代理节点添加事件监听
+        var proName = "",flag = 0;
+        if(typeof(selector) == "string"){
 
-                    flag = 1;
-                    switch(true){
-                        case /^\./.test(selector) :
-                            proName = "className";
-                            selector = selector.replace(".", "");
-                            selector = new RegExp(" *" + selector + " *");
-                            break;
-                        case /^\#/.test(selector) :
-                            proName = "id";
-                            selector = new RegExp(selector.replace("#", ""));
-                            break;
-                        default: 
-                            selector = new RegExp(selector);
-                            proName = "tagName";
-                    }
+            flag = 1;
+            switch(true){
+                case /^\./.test(selector) :
+                    proName = "className";
+                    selector = selector.replace(".", "");
+                    selector = new RegExp(" *" + selector + " *");
+                    break;
+                case /^\#/.test(selector) :
+                    proName = "id";
+                    selector = new RegExp(selector.replace("#", ""));
+                    break;
+                default: 
+                    selector = new RegExp(selector);
+                    proName = "tagName";
+            }
 
+        }
+
+        var addEvent = window.addEventListener ? "addEventListener" : "attachEvent";
+        var eventType = window.addEventListener ? eventType : "on" + eventType;
+
+        proxyNode[addEvent](eventType,function(e){
+
+            function check(node){
+
+                if(flag){
+                    if(selector.test(node[proName])){
+
+                        func.call(node, e);
+                        return;
+                    };
+                }else{
+                    if(selector == node){
+                        func.call(node, e);
+                        return;
+                    };
                 }
 
-                var addEvent = window.addEventListener ? "addEventListener" : "attachEvent";
-                var eventType = window.addEventListener ? eventType : "on" + eventType;
+                if(node == proxyNode || node.parentNode == proxyNode) return;
+                check(node.parentNode);
+            }
 
-                proxyNode[addEvent](eventType,function(e){
-
-                        function check(node){
-
-                            if(flag){
-                                if(selector.test(node[proName])){
-
-                                    func.call(node, e);
-                                    return;
-                                };
-                            }else{
-                                if(selector == node){
-                                    func.call(node, e);
-                                    return;
-                                };
-                            }
-
-                            if(node == proxyNode || node.parentNode == proxyNode) return;
-                            check(node.parentNode);
-                        }
-
-                        check(e.srcElement);
-                });
+            check(e.srcElement);
+        });
     };
-      //读取元素的css属性值
-      var css = function(el, property){
+
+    /**
+     * 读取元素的css属性值
+     * @param {HTMLNode} el 元素节点
+     * @param {String} property 属性
+     *
+     * @兼容 PC: IE 6+ & Mobile All
+     * @依赖 无
+     */
+    var css = function(el, property){
         try{
             return el.currentStyle[property] || el.style[property];
         }catch(e){
             var computedStyle = getComputedStyle(el);
             return computedStyle.getPropertyValue(property);
         }
-      };
+    };
 
-          //执行动画   类似jquery animate
-      var animate = function(el, endCss, time, callBack){
-         var FPS = 60;
-         var everyStep = {}, currStyle = {};
+    /**
+     * 执行动画   类似jquery animate
+     * @param {HTMLNode} el 元素节点
+     * @param {Object} endCss 停止节点的css属性集
+     * @param {Number} time 持续时间 ms
+     * @param {Function} callBack 执行后回调
+     * 
+     * @兼容 PC: IE 6+ & Mobile All
+     * @依赖 css
+     */
+    var animate = function(el, endCss, time, callBack){
+        var FPS = 60;
+        var everyStep = {}, currStyle = {};
 
-         for(var i in endCss){
-           var currValue = parseInt(this.css(el, i));
-           currStyle[i] = currValue;
+        for(var i in endCss){
+            var currValue = parseInt(css(el, i));
+            currStyle[i] = currValue;
 
-           everyStep[i] = parseInt(parseInt(endCss[i]) - currValue) / time;
-         }
+            everyStep[i] = parseInt(parseInt(endCss[i]) - currValue) / time;
+        }
 
-         //当前frame
-         var frame = 0, timer;
+        //当前frame
+        var frame = 0, timer;
 
-         function step(){
-           frame ++;
+        function step(){
+            frame ++;
 
-           //当前时间 ms
-           var t = frame / FPS * 1000;
+            //当前时间 ms
+            var t = frame / FPS * 1000;
 
-           //对时间做缓动变换
+            //对时间做缓动变换
 
-           //标准化当前时间
-           var t0 = t / time;
+            //标准化当前时间
+            var t0 = t / time;
 
-           //变换函数
-           var f = function(x, p0, p1, p2, p3){
+            //变换函数
+            var f = function(x, p0, p1, p2, p3){
 
-             //二次贝塞尔曲线
-             //return Math.pow((1 - x), 2) * p0 + (2 * x) * (1 - x) * p1 + x * x * p2; 
+                //二次贝塞尔曲线
+                //return Math.pow((1 - x), 2) * p0 + (2 * x) * (1 - x) * p1 + x * x * p2; 
 
-             //基于三次贝塞尔曲线 
-             return p0 * Math.pow((1 - x), 3) + 3 * p1 * x * Math.pow((1 - x), 2) + 3 * p2 * x * x * (1 - x) + p3 * Math.pow(x, 3);
-           }
+                //基于三次贝塞尔曲线 
+                return p0 * Math.pow((1 - x), 3) + 3 * p1 * x * Math.pow((1 - x), 2) + 3 * p2 * x * x * (1 - x) + p3 * Math.pow(x, 3);
+            }
 
-           //对时间进行三次贝塞尔变换 输出时间
-           var t1 = f(t0, 0.3, 0.82, 1.0, 1.0) * time;
+            //对时间进行三次贝塞尔变换 输出时间
+            var t1 = f(t0, 0.3, 0.82, 1.0, 1.0) * time;
 
-           for(var i in everyStep){
-             if(i == "opacity") el.style[i] = (currStyle[i] + everyStep[i] * t1);
-             else el.style[i] = (currStyle[i] + everyStep[i] * t1) + "px";
-           }
+            for(var i in everyStep){
+                if(i == "opacity") el.style[i] = (currStyle[i] + everyStep[i] * t1);
+                else el.style[i] = (currStyle[i] + everyStep[i] * t1) + "px";
+            }
 
-           if(frame == time / 1000 * FPS){
-             clearInterval(timer);
-             callBack && callBack();
-           }
-         }
+            if(frame == time / 1000 * FPS){
+                clearInterval(timer);
+                callBack && callBack();
+            }
+        }
 
-         timer = setInterval(step, 1000 / FPS);
+        timer = setInterval(step, 1000 / FPS);
 
-         return {
+        return {
             stop: function(){
                 clearInterval(timer);
             }
-         };
-
-      };
-
-      var getUrlParam = function (n) { 
-            var m = window.location.search.match(new RegExp('(\\?|&)' + n + '=([^&]*)(&|$)'));   
-            return !m ? '' : decodeURIComponent(m[2]);  
         };
 
-      var getParentData = function(node, dataName){
+    };
+
+    /**
+     * 取到URL地址?后参数
+     * @param {String} n 参数名称
+     *
+     * @兼容 PC: IE 6+ Mobile All
+     * @依赖 无
+     */
+    var getUrlParam = function (n) { 
+        var m = window.location.search.match(new RegExp('(\\?|&)' + n + '=([^&]*)(&|$)'));   
+        return !m ? '' : decodeURIComponent(m[2]);  
+    };
+
+    /**
+     * 向上搜索祖先元素的data-name值，找到即停止
+     * @param {HTMLNode} node 元素节点
+     * @param {String} dataName data-name的name名称
+     *
+     * @兼容 PC: IE 8+ & Mobile All
+     * @依赖 无
+     */
+    var getParentData = function(node, dataName){
         var parentNode = node;
 
         while(parentNode){
@@ -318,9 +350,9 @@
             parentNode = parentNode.parentNode;
         }
 
-      };
+    };
 
-   var util = {
+    var util = {
         request: initRequest,
         getTmpl: getTmpl,
         renderTmpl: renderTmpl,
