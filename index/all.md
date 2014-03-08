@@ -1,6 +1,6 @@
 #函数目录
 
-##[initRequest ](src/util.js)
+##[initRequest ](../src/util.js)
 初始化Ajax请求
 
 ##[createInstance ](src/util.js)
