@@ -51,7 +51,10 @@ for(var i in colorMap){
 }
 
 var ROOT_PATH = process.cwd();
-var SRC_PATH = ROOT_PATH + "/src/";
+
+var UTIL_ROOT_PATH = __dirname + "/../";
+
+var SRC_PATH = UTIL_ROOT_PATH + "src/";
 
 /*
 var enPath = process.env.PATH.split(path.delimiter);
@@ -89,7 +92,7 @@ if(! actionArg){
 function initFile(){
     var utilInitFilePath = SRC_PATH + "util-init.js";
 
-    var initStr = fs.readFileSync(utilInitFilePath);
+    var initStr = fs.readFileSync(utilInitFilePath).toString();
 
     rl.question("without given file path, util.js will be created as " + 'js/util.js'.blue + ", OK?\nPlease type enter or " + "OK".cyan + " to " + "comfirm".green + ", type " + "NO".cyan + " to " + "cancel".red + ", OR type " + "filepath".bold + " to directly tell us where to create it.\n\n\n\n", function(answer){
         answer = answer.toLowerCase().trim();
@@ -267,6 +270,18 @@ function addFunc(funcName){
         //取到方法函数体
         var argumentsReg, statements;
         var functionReg = new RegExp("\\/\\*\\*[\\s\\S]*?\\*\\/[\\s\\S]*?" + "(?:(var\\s+" + funcName + "\\s*=\\s*function\\s*\\()|(function\\s+" + funcName + "\\s*\\())", "m");
+        var commonFunctionReg = new RegExp("\\/\\*\\*[\\s\\S]*?\\*\\/[\\s\\S]*?" + "(?:var\\s+([^=]+)\\s*=\\s*function\\s*\\(|function\\s+([^=]+)\\s*\\()", "m");
+
+        var result;
+        while(result = commonFunctionReg.exec(data)){
+            if((result[1]).trim() == funcName){
+                data = data.substring(result.index);
+                break;
+            }else{
+                data = data.substring(result.index + result[0].length);
+            }
+        }
+
 
         var result = functionReg.exec(data);
 
