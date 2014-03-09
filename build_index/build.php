@@ -124,7 +124,7 @@ class IndexConstruction{
         $this->write_index($md_str);
     }
 
-    public function write_index($md_str){
+    private function write_index($md_str){
         $file = fopen(INDEX_FILE_PATH . "all.md", "w+");
 
         if(fwrite($file, $md_str)){
@@ -132,6 +132,9 @@ class IndexConstruction{
         }else{
             echo "写入index/all.md文件失败!";
         }
+    }
+
+    private function write_index_json(){
     }
 }
 $index_construction = new IndexConstruction();
