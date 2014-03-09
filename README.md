@@ -48,6 +48,7 @@ util.js旨在聚合与重组、构建方法目录，其代码将会来自优秀�
 >从npm获取util.js
 ```shell
     npm install util.js
+```
 >初始化文件
 ```shell
     util init
