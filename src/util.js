@@ -43,7 +43,7 @@
                 }
             };
 
-            httpRequest.open(method, url, false);
+            httpRequest.open(method, url, true);
             httpRequest.withCredentials = true;
             //httpRequest.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
             //httpRequest.setRequestHeader("X-Requested-From","_TC_QC_jsProxy_");
@@ -183,54 +183,57 @@
     * @兼容 PC: IE 6+ & Mobile All
     * @依赖 无
     */
-    var addEvent = function(proxyNode, selector, eventType, func){//为代理节点添加事件监听
-        var proName = "",flag = 0;
-        if(typeof(selector) == "string"){
+        var addEvent = function(proxyNode, selector, eventType, func){//为代理节点添加事件监听
+                var proName = "",flag = 0;
+                if(typeof(selector) == "string"){
 
-            flag = 1;
-            switch(true){
-                case /^\./.test(selector) :
-                    proName = "className";
-                    selector = selector.replace(".", "");
-                    selector = new RegExp(" *" + selector + " *");
-                    break;
-                case /^\#/.test(selector) :
-                    proName = "id";
-                    selector = new RegExp(selector.replace("#", ""));
-                    break;
-                default: 
-                    selector = new RegExp(selector);
-                    proName = "tagName";
-            }
+                    flag = 1;
+                    switch(true){
+                        case /^\./.test(selector) :
+                            proName = "className";
+                            selector = selector.replace(".", "");
+                            selector = new RegExp(" *" + selector + " *");
+                            break;
+                        case /^\#/.test(selector) :
+                            proName = "id";
+                            selector = new RegExp(selector.replace("#", ""));
+                            break;
+                        default: 
+                            selector = new RegExp(selector.toLowerCase());
+                            proName = "tagName";
+                    }
 
-        }
-
-        var addEvent = window.addEventListener ? "addEventListener" : "attachEvent";
-        var eventType = window.addEventListener ? eventType : "on" + eventType;
-
-        proxyNode[addEvent](eventType,function(e){
-
-            function check(node){
-
-                if(flag){
-                    if(selector.test(node[proName])){
-
-                        func.call(node, e);
-                        return;
-                    };
-                }else{
-                    if(selector == node){
-                        func.call(node, e);
-                        return;
-                    };
                 }
 
-                if(node == proxyNode || node.parentNode == proxyNode) return;
-                check(node.parentNode);
-            }
+                var addEvent = window.addEventListener ? "addEventListener" : "attachEvent";
+                var eventType = window.addEventListener ? eventType : "on" + eventType;
 
-            check(e.srcElement);
-        });
+                proxyNode[addEvent](eventType,function(e){
+
+                        function check(node){
+
+                            if(flag){
+                                var name = node[proName];
+
+                                if(proName == 'tagName') name = name.toLowerCase();
+                                if(selector.test(name)){
+
+                                    func.call(node, e);
+                                    return;
+                                };
+                            }else{
+                                if(selector == node){
+                                    func.call(node, e);
+                                    return;
+                                };
+                            }
+
+                            if(node == proxyNode || node.parentNode == proxyNode) return;
+                            check(node.parentNode);
+                        }
+
+                        check(e.srcElement);
+                });
     };
 
     /**
@@ -352,6 +355,63 @@
 
     };
 
+          /**
+           * 检查祖先元素是否为与某selector匹配
+           * @param {HTMLNode} el html元素
+           * @param {String} parentSelector 祖先元素的selector
+           * @param {Function} func 如果是则进行的回调，func的参数为匹配到的祖先元素
+           * @return {Boolean}  是否匹配
+           *
+           * @兼容 PC: IE 6+ & Mobile All
+           * @依赖 无
+           */
+          var parentIs =  function(el, parentSelector, func){
+            if(! el) return;
+
+            var proName;
+            var selector = parentSelector;
+
+            var parentNode;
+
+            switch(true){
+                case /^\./.test(selector) :
+                    proName = "className";
+                    selector = selector.replace(".", "");
+                    selector = new RegExp(" *" + selector + " *");
+                    break;
+                case /^\#/.test(selector) :
+                    proName = "id";
+                    selector = new RegExp(selector.replace("#", ""));
+                    break;
+                default: 
+                    selector = new RegExp(selector.toLowerCase());
+                    proName = "tagName";
+            }
+
+            var flag = 0;
+
+            function checkParent(el){
+                if(selector.test(el[proName])){
+                    parentNode = el;
+                    flag = 1;
+                    return;
+                }else{
+                    if(el.parentNode){
+                        checkParent(el.parentNode);
+                    }else{
+                    }
+                }
+            }
+
+            checkParent(el);
+
+            if(flag){
+                func && func(parentNode);
+            }
+
+            return flag;
+        };
+
     var util = {
         request: initRequest,
         getTmpl: getTmpl,
@@ -360,7 +420,8 @@
         animate: animate,
         css: css,
         getUrlParam: getUrlParam,
-        getParentData: getParentData
+        getParentData: getParentData,
+        parentIs: parentIs
     };
 
     window.Util = util;

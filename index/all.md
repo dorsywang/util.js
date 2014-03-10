@@ -1,5 +1,6 @@
 #函数目录
 
+
 ##[initRequest ](../src/util.js)
 初始化Ajax请求
 
@@ -26,3 +27,6 @@
 
 ##[getParentData ](../src/util.js)
 向上搜索祖先元素的data-name值，找到即停止
+
+##[parentIs ](../src/util.js)
+检查祖先元素是否为与某selector匹配
