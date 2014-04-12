@@ -64,8 +64,6 @@
     var createInstance = function(){
         var xmlHttp;
 
-        return new XMLHttpRequest();
-
         try{
             // Firefox,Opera 8.0+,Safari
             xmlHttp = new XMLHttpRequest();
@@ -73,10 +71,10 @@
             // Internet Explorer
             try{
                 xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            }catch(e){
+            }catch(_e){
                 try{
                     xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }catch(e){
+                }catch(__e){
                     return false;
                 }
             }
@@ -84,6 +82,81 @@
 
         return xmlHttp;
     };
+
+    /**
+     * 检查元素是否在array里 并返回index 如果没有 push进去返回index
+     * @兼容性： PC: IE6+ & Mobile All
+     * @param {Array} arr 搜寻的数组
+     * @param {Mix} searchItem 要寻找的数据
+     * @依赖： 无
+     */
+    var arrayGetIndex = function(arr, searchItem){
+            for(var i = 0; i < arr.length; i ++){
+                if(arr[i] == searchItem){
+                    return i;
+                }
+            }
+
+            arr.push(searchItem);
+            return arr.length - 1;
+    };
+
+    /**
+     * 使某节点上的元素事件触发
+     * @兼容性： Mobile All
+     * @param {HTMLNode} node 节点元素
+     * @param {String} eventType 触发事件
+     * @依赖： 无
+     */
+    var triggerProxyEvent = function(node, eventType){
+            var event = document.createEvent('MouseEvents');
+            event.initEvent(eventType, 1, 1);
+
+            node.dispatchEvent(event);
+    };
+
+    /**
+     * 获取/设置节点上由data-name属性值
+     * @兼容性 PC IE6+ & Mobile All
+     * @param {HTMLNode} node 节点元素
+     * @param {String} name name名称
+     * @param {Mixed} value 设置的值
+     * @依赖：无
+     */
+    var data = function(node, name, value){
+            if(value !== undefined){
+                node && ((node.dataset && (node.dataset[name] = value)) || (node.setAttribute('data-' + name, value)));
+            }else{
+                return (node && node.dataset && node.dataset[name]) || (node && node.getAttribute('data-' + name));
+            }
+    };
+
+     /**
+      * 对selector String取到对应的正则与属性名称
+      * @兼容性 PC IE6+ & Mobile All
+      * @param {String} selector 选择器字符串
+      * @return {Array} 第一个为正则 第二个为属性名称
+      */
+     var formatSelector = function(selector){
+            var proName = "";
+
+            switch(true){
+                case /^\./.test(selector) :
+                    proName = "className";
+                    selector = selector.replace(".", "");
+                    selector = new RegExp(" *" + selector + " *");
+                    break;
+                case /^\#/.test(selector) :
+                    proName = "id";
+                    selector = new RegExp(selector.replace("#", ""));
+                    break;
+                default: 
+                    selector = new RegExp(selector);
+                    proName = "tagName";
+            }
+
+            return [selector, proName];
+        };
 
 
     /**
@@ -206,7 +279,7 @@
                 }
 
                 var addEvent = window.addEventListener ? "addEventListener" : "attachEvent";
-                var eventType = window.addEventListener ? eventType : "on" + eventType;
+                eventType = window.addEventListener ? eventType : "on" + eventType;
 
                 proxyNode[addEvent](eventType,function(e){
 
@@ -220,12 +293,12 @@
 
                                     func.call(node, e);
                                     return;
-                                };
+                                }
                             }else{
                                 if(selector == node){
                                     func.call(node, e);
                                     return;
-                                };
+                                }
                             }
 
                             if(node == proxyNode || node.parentNode == proxyNode) return;
@@ -296,7 +369,7 @@
 
                 //基于三次贝塞尔曲线 
                 return p0 * Math.pow((1 - x), 3) + 3 * p1 * x * Math.pow((1 - x), 2) + 3 * p2 * x * x * (1 - x) + p3 * Math.pow(x, 3);
-            }
+            };
 
             //对时间进行三次贝塞尔变换 输出时间
             var t1 = f(t0, 0.3, 0.82, 1.0, 1.0) * time;
